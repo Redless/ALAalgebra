@@ -108,6 +108,8 @@ parser = ViterbiParser(grammar)
 with open(fdir + fname) as fin:
     sentences = set()
 
+    mod = 0
+
     for eq in fin:
         eq = eq.split("\t")[2]
         eq = eq.lower()
@@ -117,6 +119,13 @@ with open(fdir + fname) as fin:
             proc += i
         past = False
         for sin in proc.split(";"):
+            mod += 1
+            if mod%100 == 0:
+                if parser.parse(sin):
+                    reqReq = requests.post(url+"request/"+str(agentID)+"/", json={
+                        "state": {"equation": {"id":"eqn","value":sin,"contentEditable":True},},})
+                    print("test input:",sin)
+                    print("test output:",reqReq.json())
             if past:
                 if parser.parse(past) and parser.parse(sin):
                     obj = {
