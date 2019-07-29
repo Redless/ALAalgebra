@@ -127,7 +127,7 @@ with open(fdir + fname) as fin:
                       },
                       "reward": 1,
                       "state": {
-                          "eqn": past,
+                          "equation": {"id":"eqn","value":past,"contentEditable":True},
                       }
                     }
                     trainReq = requests.post(url+"train/"+str(agentID)+"/", json=obj)
