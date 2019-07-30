@@ -1,12 +1,5 @@
-import requests
-import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# import ../db.py
-from nltk import ViterbiParser
-from nltk.grammar import PCFG
-
-
-grammar = PCFG.fromstring("""
+from nltk import PCFG
+grammar = PCFG.fromstring('''
     S -> side eqside [0.766312]
     side -> side plusterm [0.215816]
     side -> side minusterm [0.204728]
@@ -94,60 +87,4 @@ grammar = PCFG.fromstring("""
     side -> '8' [0.00681801]
     side -> '7' [0.00213531]
     term -> '6' [0.00543381]
-""")
-
-agentID = 1
-
-url = "http://127.0.0.1:8000/"
-
-sin = "yuck"
-reqReq = requests.post(url+"request/"+str(agentID)+"/", json={
-                        "state": {"equation": {"id":"eqn","value":sin,"contentEditable":True},},})
-print(reqReq)
-print("test input:",sin)
-print("test output:",reqReq.json())
-
-
-fdir = "/Users/gabriel/"
-fname = "examples2"
-
-parser = ViterbiParser(grammar)
-
-with open(fdir + fname) as fin:
-    sentences = set()
-
-    mod = 0
-
-    for eq in fin:
-        eq = eq.split("\t")[2]
-        eq = eq.lower()
-        eq = filter(lambda ch: ch in "()1234567890+-*/.;=x", eq)
-        proc = ""
-        for i in eq:
-            proc += i
-        past = False
-        for sin in proc.split(";"):
-            mod += 1
-            if mod%100 == 0:
-                if parser.parse(sin):
-                    reqReq = requests.post(url+"request/"+str(agentID)+"/", json={
-                        "state": {"equation": {"id":"eqn","value":sin,"contentEditable":True},},})
-                    print("test input:",sin)
-                    print("test output:",reqReq.json())
-            if past:
-                if parser.parse(past) and parser.parse(sin):
-                    obj = {
-                      "selection": "eqn",
-                      "action": "UpdateTextField",
-                      "inputs": {
-                          "value": sin,
-                      },
-                      "reward": 1,
-                      "state": {
-                          "equation": {"id":"eqn","value":past,"contentEditable":True},
-                      }
-                    }
-                    trainReq = requests.post(url+"train/"+str(agentID)+"/", json=obj)
-                    print(trainReq.status_code, trainReq.reason)
-
-            past = sin
+''')
