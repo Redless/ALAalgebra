@@ -36,7 +36,7 @@ def custom_function_set():
     should probably turn it off if we ever have a production server.
     """
     # return [add_rule, sub_rule, mult_rule, div_rule,ones,tens]
-    return [add_rule, sub_rule, mult_rule, div_rule]
+    return [grammar_parser_rule]
     # return [add_then_tens, add_then_ones,add_then_tens3,add_then_ones3]
 
 
