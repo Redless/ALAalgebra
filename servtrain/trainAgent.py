@@ -100,7 +100,8 @@ agentID = 1
 
 url = "http://127.0.0.1:8000/"
 
-sin = "yuck"
+sin = "3x = 3x"
+#sin = [i for i in sin]
 reqReq = requests.post(url+"request/"+str(agentID)+"/", json={
                         "state": {"equation": {"id":"eqn","value":sin,"contentEditable":True},},})
 print(reqReq)

@@ -12,7 +12,7 @@ from learners.WhenLearner import get_when_learner
 from learners.WhereLearner import get_where_learner
 from learners.WhichLearner import get_which_learner
 from planners.base_planner import get_planner
-from planners.VectorizedPlanner import VectorizedPlanner
+from planners.fo_planner import FoPlanner
 # from learners.HowLearner import get_planner
 # from planners.fo_planner import FoPlanner, execute_functions, unify, subst
 import itertools
@@ -278,7 +278,9 @@ class ModularAgent(BaseAgent):
               skill_label, foci_of_attention):  # -> return None
         state = StateMultiView("object", state)
         sai = SAIS(selection, action, inputs)
+        print(state.get_view("object"))
         state_featurized = self.planner.apply_featureset(state)
+        print(state_featurized.get_view("object"))
         explanations = self.explanations_from_skills(state_featurized, sai,
                                                      self.rhs_list,
                                                      foci_of_attention)
