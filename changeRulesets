@@ -1,0 +1,2 @@
+simply add "from servtrain.Grammar import grammar" to make rulesets.py do what you want.
+in modular agent, switch to vectorized planner instead of FoPlanner
